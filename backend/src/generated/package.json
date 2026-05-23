@@ -1,0 +1,13 @@
+{
+  "name": "prisma-client",
+  "private": true,
+  "type": "module",
+  "main": "./client.js",
+  "types": "./client.ts",
+  "exports": {
+    ".": {
+      "import": "./client.js",
+      "types": "./client.ts"
+    }
+  }
+}

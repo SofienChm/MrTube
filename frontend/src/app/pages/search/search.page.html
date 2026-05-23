@@ -1,0 +1,20 @@
+<div class="search-title" *ngIf="query">
+  <h2>Résultats pour "{{ query }}"</h2>
+</div>
+
+<app-skeleton-list *ngIf="loading"></app-skeleton-list>
+
+<div class="empty-state" *ngIf="!loading && results.length === 0 && query.length > 0">
+  <p>Aucun résultat trouvé</p>
+</div>
+
+<div class="results-grid">
+  <div class="result-card" *ngFor="let song of results" (click)="onPlay(song, results)">
+    <img [src]="song.thumbnail" [alt]="song.title">
+    <div class="result-info">
+      <span class="result-title">{{ song.title }}</span>
+      <span class="result-artist">{{ song.artist }}</span>
+    </div>
+    <span class="result-duration">{{ song.durationFormatted }}</span>
+  </div>
+</div>

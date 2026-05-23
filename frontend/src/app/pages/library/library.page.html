@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>My Library</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="showCreatePrompt()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-list *ngIf="playlists.length > 0">
+    <ion-item *ngFor="let pl of playlists" button [routerLink]="['/playlist', pl.id]">
+      <ion-thumbnail slot="start">
+        <img [src]="pl.cover || 'assets/default-playlist.svg'" />
+      </ion-thumbnail>
+      <ion-label>
+        <h3>{{ pl.name }}</h3>
+        <p>{{ pl.songs.length }} songs</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div class="empty-state" *ngIf="playlists.length === 0">
+    <ion-icon name="musical-notes-outline" size="large"></ion-icon>
+    <p>No playlists yet</p>
+    <ion-button fill="outline" (click)="showCreatePrompt()">Create Playlist</ion-button>
+  </div>
+</ion-content>

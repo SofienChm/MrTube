@@ -1,0 +1,21 @@
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 24px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 32px;
+  h1 { font-size: 2rem; margin: 0; }
+  p { color: var(--ion-color-medium); margin: 4px 0 0; }
+}
+
+.toggle-text {
+  text-align: center;
+  margin-top: 16px;
+  color: var(--ion-color-medium);
+  span { color: var(--ion-color-primary); cursor: pointer; font-weight: 600; }
+}

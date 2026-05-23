@@ -1,0 +1,90 @@
+.artwork {
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px 16px;
+  img {
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 1;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 8px 32px rgba(108, 99, 255, 0.3);
+    transition: transform 0.3s ease;
+  }
+  &.playing img {
+    transform: scale(1.03);
+  }
+}
+
+.song-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px 16px;
+  .song-text {
+    flex: 1;
+    min-width: 0;
+    h2 { margin: 0; font-size: 1.15rem; font-weight: 700; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    p { margin: 4px 0 0; font-size: 0.85rem; color: #888; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  }
+}
+
+.progress {
+  padding: 0 16px;
+  ion-range { padding: 0; }
+  .time-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #888;
+  }
+}
+
+.main-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 16px;
+  position: relative;
+  .play-btn {
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+  .repeat-one-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #f05d23;
+  }
+}
+
+.volume {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  ion-range { flex: 1; padding: 0; }
+}
+
+.bottom-actions {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 16px 24px;
+}
+
+.up-next {
+  padding: 0 16px 80px;
+  h3 { margin: 0 0 8px; font-size: 1rem; color: #fff; }
+  ion-item {
+    --background: transparent;
+    --color: #fff;
+    --border-color: rgba(255,255,255,0.06);
+  }
+  ion-thumbnail { --size: 40px; border-radius: 4px; overflow: hidden; }
+  h4 { margin: 0; font-size: 0.85rem; font-weight: 500; }
+  p { margin: 2px 0 0; font-size: 0.75rem; color: #888; }
+  ion-note { font-size: 0.75rem; color: #888; }
+}

@@ -1,0 +1,6 @@
+{
+  "/music": { "target": "http://localhost:3000", "secure": false, "proxyTimeout": 15000, "timeout": 15000 },
+  "/auth": { "target": "http://localhost:3000", "secure": false, "proxyTimeout": 15000, "timeout": 15000 },
+  "/playlist": { "target": "http://localhost:3000", "secure": false, "proxyTimeout": 15000, "timeout": 15000 },
+  "/recently-played": { "target": "http://localhost:3000", "secure": false, "proxyTimeout": 15000, "timeout": 15000 }
+}

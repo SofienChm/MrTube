@@ -1,0 +1,42 @@
+<ion-content>
+  <div class="auth-container">
+    <div class="logo">
+      <h1>StreamFlow</h1>
+      <p>Music without limits</p>
+    </div>
+
+    <ng-container *ngIf="isLogin; else registerTemplate">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" [(ngModel)]="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+      <ion-button expand="block" class="ion-margin-top" (click)="onLogin()">Sign In</ion-button>
+      <p class="toggle-text">
+        Don't have an account? <span (click)="isLogin = false">Register</span>
+      </p>
+    </ng-container>
+
+    <ng-template #registerTemplate>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input [(ngModel)]="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" [(ngModel)]="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+      <ion-button expand="block" class="ion-margin-top" (click)="onRegister()">Register</ion-button>
+      <p class="toggle-text">
+        Already have an account? <span (click)="isLogin = true">Sign In</span>
+      </p>
+    </ng-template>
+  </div>
+</ion-content>

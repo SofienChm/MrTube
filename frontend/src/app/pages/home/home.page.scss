@@ -1,0 +1,87 @@
+.mood-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  padding: 0 20px;
+}
+
+.chip {
+  background-color: #2a2a2a;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.chip:hover { background-color: #3f3f3f; }
+
+
+
+
+
+
+/* Search Tabs */
+.search-tabs {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #333;
+}
+
+.tab {
+  background: none;
+  border: none;
+  color: #aaa;
+  padding: 10px 0;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tab.active {
+  color: white;
+  border-bottom: 2px solid white;
+}
+
+/* Results List */
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.result-item:hover {
+  background-color: #1f1f1f;
+}
+
+.thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.thumb.circle {
+  border-radius: 50%;
+}
+
+.result-info h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.result-info p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #aaa;
+}

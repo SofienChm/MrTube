@@ -1,0 +1,10 @@
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+  gap: 12px;
+  color: var(--ion-color-medium);
+  ion-icon { opacity: 0.4; }
+}

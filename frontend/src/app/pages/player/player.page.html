@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar style="--background: #0f0f0f; color: #fff;">
+    <ion-buttons slot="start">
+      <ion-button (click)="onDismiss()">
+        <ion-icon slot="icon-only" name="chevron-down"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Now Playing</ion-title>
+    <ion-buttons slot="end">
+      <ion-button id="player-actions-trigger">
+        <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+      <ion-action-sheet trigger="player-actions-trigger"
+        header="Options"
+        [buttons]="[
+          { text: 'Add to Playlist', data: { action: 'addtoplaylist' } },
+          { text: 'View Queue', data: { action: 'queue' } },
+          { text: 'Download', data: { action: 'download' } },
+          { text: 'Share', data: { action: 'share' } },
+          { text: 'Cancel', role: 'cancel' }
+        ]"
+        (ionActionSheetDidDismiss)="onActionSheet($event)">
+      </ion-action-sheet>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="--background: #0f0f0f;">
+  <ng-container *ngIf="player.currentSong$ | async as song">
+    <div class="artwork" [class.playing]="player.isPlaying$ | async">
+      <img [src]="song.thumbnail" [alt]="song.title" />
+    </div>
+
+    <div class="song-info">
+      <div class="song-text">
+        <h2>{{ song.title }}</h2>
+        <p>{{ song.artist }}</p>
+      </div>
+      <ion-button fill="clear" size="small">
+        <ion-icon slot="icon-only" name="heart-outline" style="color: #888;"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div class="progress">
+      <ion-range
+        [min]="0"
+        [max]="player.totalTime$ | async"
+        [value]="player.currentTime$ | async"
+        (ionChange)="onSeek($event)"
+        style="--bar-background: rgba(255,255,255,0.15); --bar-background-active: #f05d23; --knob-size: 14px;"
+      ></ion-range>
+      <div class="time-labels">
+        <span>{{ player.formatTime(player.currentTime$.value) }}</span>
+        <span>{{ player.formatTime(player.totalTime$.value) }}</span>
+      </div>
+    </div>
+
+    <div class="main-controls">
+      <ion-button fill="clear" (click)="player.toggleShuffle()">
+        <ion-icon slot="icon-only" name="shuffle" [style.color]="(player.isShuffle$ | async) ? '#f05d23' : '#888'"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="onPrev()">
+        <ion-icon slot="icon-only" name="play-skip-back" style="color: #fff; font-size: 1.5rem;"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" class="play-btn" (click)="onTogglePlay()">
+        <ion-spinner *ngIf="player.isLoading$ | async" name="crescent" color="light"></ion-spinner>
+        <ion-icon *ngIf="!(player.isLoading$ | async)" slot="icon-only" [name]="(player.isPlaying$ | async) ? 'pause-circle' : 'play-circle'" style="color: #fff; font-size: 3.5rem;"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="onNext()">
+        <ion-icon slot="icon-only" name="play-skip-forward" style="color: #fff; font-size: 1.5rem;"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="player.cycleRepeatMode()">
+        <ion-icon slot="icon-only" name="repeat" [style.color]="(player.repeatMode$ | async) !== 'none' ? '#f05d23' : '#888'"></ion-icon>
+        <span *ngIf="(player.repeatMode$ | async) === 'one'" class="repeat-one-badge">1</span>
+      </ion-button>
+    </div>
+
+    <div class="volume">
+      <ion-icon name="volume-low" style="color: #888;"></ion-icon>
+      <ion-range
+        [min]="0"
+        [max]="100"
+        [value]="player.volume$ | async"
+        (ionChange)="onVolumeChange($event)"
+        style="--bar-background: rgba(255,255,255,0.15); --bar-background-active: #f05d23; --knob-size: 12px;"
+      ></ion-range>
+      <ion-icon name="volume-high" style="color: #888;"></ion-icon>
+    </div>
+
+    <div class="bottom-actions">
+      <ion-button fill="clear" (click)="onAddToPlaylist()">
+        <ion-icon slot="icon-only" name="add-circle-outline" style="color: #888;"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="onOpenQueue()">
+        <ion-icon slot="icon-only" name="list-outline" style="color: #888;"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="onDownload()">
+        <ion-icon slot="icon-only" name="download-outline" style="color: #888;"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="onShare()">
+        <ion-icon slot="icon-only" name="share-outline" style="color: #888;"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div class="up-next">
+      <h3>Up Next</h3>
+      <ion-item *ngFor="let r of related" button (click)="player.play(r)">
+        <ion-thumbnail slot="start">
+          <img [src]="r.thumbnail" />
+        </ion-thumbnail>
+        <ion-label>
+          <h4>{{ r.title }}</h4>
+          <p>{{ r.artist }}</p>
+        </ion-label>
+        <ion-note slot="end">{{ r.durationFormatted }}</ion-note>
+      </ion-item>
+    </div>
+  </ng-container>
+</ion-content>

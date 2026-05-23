@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ playlist?.name }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onDelete()" color="danger">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="playlist-header" *ngIf="playlist">
+    <img [src]="playlist.cover || 'assets/default-playlist.svg'" />
+    <h1>{{ playlist.name }}</h1>
+    <p>{{ playlist.songs.length }} songs</p>
+    <ion-button *ngIf="playlist.songs.length" fill="outline" size="small" (click)="onDownloadAll()">
+      <ion-icon slot="start" name="download-outline"></ion-icon>
+      Download All
+    </ion-button>
+  </div>
+
+  <ion-list *ngIf="playlist?.songs?.length">
+    <ion-item *ngFor="let song of playlist!.songs" button (click)="onPlaySong(song)">
+      <ion-thumbnail slot="start">
+        <img [src]="song.thumbnail" />
+      </ion-thumbnail>
+      <ion-label>
+        <h4>{{ song.title }}</h4>
+        <p>{{ song.artist }}</p>
+      </ion-label>
+      <ion-note slot="end">{{ formatDuration(song.duration) }}</ion-note>
+      <ion-button slot="end" fill="clear" (click)="onDownloadSong(song, $event)">
+        <ion-icon slot="icon-only" name="download-outline" style="color: #888;"></ion-icon>
+      </ion-button>
+      <ion-button slot="end" fill="clear" color="danger" (click)="onRemoveSong(song.id, $event)">
+        <ion-icon slot="icon-only" name="close-circle"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

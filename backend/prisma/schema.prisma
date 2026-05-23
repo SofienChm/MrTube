@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  playlists      Playlist[]
+  recentlyPlayed RecentlyPlayed[]
+}
+
+model Playlist {
+  id        String   @id @default(uuid())
+  name      String
+  cover     String?
+  userId    String
+  user      User          @relation(fields: [userId], references: [id])
+  songs     PlaylistSong[]
+  createdAt DateTime      @default(now())
+}
+
+model PlaylistSong {
+  id         String   @id @default(uuid())
+  playlistId String
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  videoId    String
+  title      String
+  artist     String
+  thumbnail  String
+  duration   Int
+  addedAt    DateTime @default(now())
+}
+
+model RecentlyPlayed {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  videoId   String
+  title     String
+  artist    String
+  thumbnail String
+  duration  Int
+  playedAt  DateTime @default(now())
+}
