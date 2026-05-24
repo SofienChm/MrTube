@@ -19,7 +19,7 @@ import { Song } from '../../../interfaces/song.interface';
         <input #searchInput type="text" [(ngModel)]="query" (keyup.enter)="onSearch()" (input)="onQueryChange()" (focus)="onFocus()" (blur)="onBlur()" placeholder="Rechercher des titres, albums, artistes ou podcasts" autocomplete="off">
         @if (showDropdown && suggestions.length > 0) {
           <div class="search-dropdown">
-            <div class="dropdown-item" *ngFor="let s of suggestions" (mousedown)="onPlaySuggestion(s)">
+            <div class="dropdown-item" *ngFor="let s of suggestions" (click)="onPlaySuggestion(s)">
               <img [src]="s.thumbnail" [alt]="s.title">
               <div class="dropdown-info">
                 <span class="dropdown-title">{{ s.title }}</span>
@@ -39,11 +39,11 @@ import { Song } from '../../../interfaces/song.interface';
         <div class="mobile-search-inner" (mousedown)="$event.stopPropagation()">
           <div class="mobile-search-header">
             <button class="back-btn" (click)="closeMobileSearch()">&larr;</button>
-            <input class="mobile-search-input" type="text" [(ngModel)]="mobileQuery" (keyup.enter)="onMobileSearch()" (input)="onMobileQueryChange()" placeholder="Rechercher..." autocomplete="off">
+            <input class="mobile-search-input" type="search" [(ngModel)]="mobileQuery" (keydown.enter)="onMobileSearch(); $event.preventDefault()" (input)="onMobileQueryChange()" placeholder="Rechercher..." autocomplete="off">
           </div>
           @if (mobileSuggestions.length > 0) {
             <div class="mobile-results">
-              <div class="mobile-result-item" *ngFor="let s of mobileSuggestions" (mousedown)="onPlaySuggestionMobile(s)">
+              <div class="mobile-result-item" *ngFor="let s of mobileSuggestions" (click)="onPlaySuggestionMobile(s)">
                 <img [src]="s.thumbnail" [alt]="s.title">
                 <div class="dropdown-info">
                   <span class="dropdown-title">{{ s.title }}</span>
