@@ -1,6 +1,8 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { SidebarComponent } from '../../homepage/components/sidebar/sidebar.component';
 import { SearchComponent } from '../../homepage/components/search/search.component';
 import { AccountComponent } from '../../homepage/components/account/account.component';
@@ -26,10 +28,12 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
           <router-outlet></router-outlet>
         </main>
       </div>
-      <div class="bottom-wrapper">
-        <app-mini-player></app-mini-player>
-        <app-bottom-nav></app-bottom-nav>
-      </div>
+      @if (!isPlayerPage) {
+        <div class="bottom-wrapper">
+          <app-mini-player></app-mini-player>
+          <app-bottom-nav></app-bottom-nav>
+        </div>
+      }
     </div>
   `,
   styles: [`
@@ -92,4 +96,23 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
     }
   `],
 })
-export class MainLayoutComponent {}
+export class MainLayoutComponent implements OnInit, OnDestroy {
+  isPlayerPage = false;
+  private readonly destroy$ = new Subject<void>();
+
+  constructor(private readonly router: Router) {}
+
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      takeUntil(this.destroy$),
+    ).subscribe(() => {
+      this.isPlayerPage = this.router.url.startsWith('/player');
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}

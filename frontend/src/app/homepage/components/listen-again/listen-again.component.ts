@@ -13,14 +13,16 @@ import { Song } from '../../../interfaces/song.interface';
       <div class="header-row">
         <h3>Listen again</h3>
       </div>
-      <div class="video-grid">
-        <div class="video-card" *ngFor="let song of songs" (click)="onPlay(song)">
-          <div class="thumb-wrapper">
-            <img [src]="song.thumbnail" [alt]="song.title">
-            <div class="play-overlay">▶</div>
+      <div class="carousel-wrapper">
+        <div class="carousel" #carousel>
+          <div class="carousel-card" *ngFor="let song of songs" (click)="onPlay(song)">
+            <div class="thumb-wrapper">
+              <img [src]="song.thumbnail" [alt]="song.title">
+              <div class="play-overlay">▶</div>
+            </div>
+            <h4>{{ song.title }}</h4>
+            <p>{{ song.artist }}</p>
           </div>
-          <h4>{{ song.title }}</h4>
-          <p>{{ song.artist }}</p>
         </div>
       </div>
     </section>
@@ -28,8 +30,26 @@ import { Song } from '../../../interfaces/song.interface';
   styles: [`
     .history-section { padding: 20px; color: white; margin-bottom: 40px; }
     .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .video-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-    .video-card { cursor: pointer; }
+    .carousel-wrapper {
+      overflow: hidden;
+      margin: 0 -20px;
+      padding: 0 20px;
+    }
+    .carousel {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+    }
+    .carousel::-webkit-scrollbar { height: 4px; }
+    .carousel::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+    .carousel-card {
+      flex: 0 0 180px;
+      scroll-snap-align: start;
+      cursor: pointer;
+    }
     .thumb-wrapper { position: relative; border-radius: 8px; overflow: hidden; }
     .thumb-wrapper img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
     .play-overlay {
@@ -40,12 +60,13 @@ import { Song } from '../../../interfaces/song.interface';
       opacity: 0;
       transition: opacity 0.2s;
     }
-    .video-card:hover .play-overlay { opacity: 1; }
-    .video-card h4 { margin: 10px 0 5px; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .video-card p { color: #aaa; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .carousel-card:hover .play-overlay { opacity: 1; }
+    .carousel-card h4 { margin: 10px 0 5px; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .carousel-card p { color: #aaa; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     @media (max-width: 768px) {
       .history-section { padding: 12px; margin-bottom: 20px; }
-      .video-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .carousel-card { flex: 0 0 150px; }
+      .carousel-wrapper { margin: 0 -12px; padding: 0 12px; }
     }
   `],
 })
