@@ -58,6 +58,15 @@ import { AddToPlaylistModalComponent } from '../../shared/components/add-to-play
     .info { flex: 1; min-width: 0; }
     .title { display: block; font-size: 0.85rem; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #fff; }
     .artist { display: block; font-size: 0.75rem; color: #888; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    @media (max-width: 768px) {
+      .mini-player {
+        padding: 10px 12px;
+        gap: 12px;
+      }
+      img { width: 40px; height: 40px; }
+      .title { font-size: 0.8rem; }
+      .artist { font-size: 0.7rem; }
+    }
   `],
 })
 export class MiniPlayerComponent {

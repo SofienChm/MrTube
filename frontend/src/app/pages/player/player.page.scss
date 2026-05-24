@@ -88,3 +88,26 @@
   p { margin: 2px 0 0; font-size: 0.75rem; color: #888; }
   ion-note { font-size: 0.75rem; color: #888; }
 }
+
+@media (max-width: 768px) {
+  .artwork {
+    padding: 16px 16px 8px;
+    img {
+      max-width: 100%;
+      border-radius: 12px;
+    }
+  }
+  .song-info {
+    padding: 0 12px 12px;
+    .song-text h2 { font-size: 1rem; }
+    .song-text p { font-size: 0.8rem; }
+  }
+  .progress { padding: 0 12px; }
+  .main-controls {
+    gap: 0;
+    padding: 4px 12px;
+  }
+  .volume { padding: 4px 12px; }
+  .bottom-actions { padding: 4px 12px 16px; }
+  .up-next { padding: 0 12px 60px; }
+}

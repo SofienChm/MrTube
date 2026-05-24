@@ -44,9 +44,10 @@ import { Song } from '../../../interfaces/song.interface';
       cursor: pointer;
     }
     .item-card:hover { background-color: #2a2a2a; }
-    .thumb { width: 50px; height: 50px; border-radius: 4px; object-fit: cover; }
-    .info h3 { margin: 0; font-size: 14px; }
-    .info p { margin: 4px 0 0; font-size: 12px; color: #aaaaaa; }
+    .thumb { width: 50px; height: 50px; border-radius: 4px; object-fit: cover; flex-shrink: 0; }
+    .info { min-width: 0; }
+    .info h3 { margin: 0; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .info p { margin: 4px 0 0; font-size: 12px; color: #aaaaaa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .play-all {
       background: transparent;
       color: white;
@@ -65,6 +66,12 @@ import { Song } from '../../../interfaces/song.interface';
       border-radius: 50%;
       margin-left: 8px;
       cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .quick-picks-section { padding: 12px; }
+      .grid-container { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .nav-btn { display: none; }
+      .play-all { display: none; }
     }
   `],
 })

@@ -47,6 +47,7 @@ import { Router } from '@angular/router';
       display: flex;
       flex-direction: column;
       height: 100vh;
+      flex-shrink: 0;
     }
       .logo-img { width: 24px; height: 24px; }
       .logo {
@@ -102,6 +103,25 @@ import { Router } from '@angular/router';
     }
     .new-playlist-btn:hover { background-color: #2a2a2a; }
     .icon-sidebar { width: 20px; height: 20px; }
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .sidebar {
+        width: 72px;
+        padding: 16px 8px;
+        align-items: center;
+      }
+      .logo span { display: none; }
+      .logo { justify-content: center; padding: 0; margin-bottom: 20px; }
+      .nav-links li { justify-content: center; padding: 12px 0; gap: 0; }
+      .nav-links li span:not(.icon-sidebar) { display: none; }
+      .new-playlist-btn span:not(.icon-sidebar) { display: none; }
+      .new-playlist-btn { justify-content: center; padding: 10px; border-radius: 50%; }
+      .divider { width: 100%; }
+    }
   `],
 })
 export class SidebarComponent {

@@ -41,8 +41,12 @@ import { Song } from '../../../interfaces/song.interface';
       transition: opacity 0.2s;
     }
     .video-card:hover .play-overlay { opacity: 1; }
-    .video-card h4 { margin: 10px 0 5px; font-size: 14px; }
-    .video-card p { color: #aaa; font-size: 12px; }
+    .video-card h4 { margin: 10px 0 5px; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .video-card p { color: #aaa; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    @media (max-width: 768px) {
+      .history-section { padding: 12px; margin-bottom: 20px; }
+      .video-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    }
   `],
 })
 export class ListenAgainComponent implements OnInit {
