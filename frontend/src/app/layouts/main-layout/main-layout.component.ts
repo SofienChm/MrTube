@@ -88,7 +88,7 @@ import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.compo
       .bottom-wrapper {
         display: block;
         position: fixed;
-        bottom: 0;
+        bottom: 55px;
         left: 0;
         right: 0;
         z-index: 50;
