@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { prisma } from '../shared/prisma';
+import { prisma } from '../shared/prisma.js';
 
 @Injectable()
 export class RecentlyPlayedService {

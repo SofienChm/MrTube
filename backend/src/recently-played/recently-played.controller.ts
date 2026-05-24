@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { RecentlyPlayedService } from './recently-played.service';
+import { RecentlyPlayedService } from './recently-played.service.js';
 
 @ApiTags('Recently Played')
 @ApiBearerAuth()

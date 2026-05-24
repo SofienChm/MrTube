@@ -1,8 +1,8 @@
 import { Controller, Get, Query, Param, Res, Header } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
-import { MusicService } from './music.service';
-import { SearchQueryDto } from '../shared/dto/search-query.dto';
-import { ApiResponse, Song, SearchResult } from '../shared/interfaces/song.interface';
+import { MusicService } from './music.service.js';
+import { SearchQueryDto } from '../shared/dto/search-query.dto.js';
+import { ApiResponse, Song, SearchResult } from '../shared/interfaces/song.interface.js';
 import type { Response } from 'express';
 
 @ApiTags('Music')

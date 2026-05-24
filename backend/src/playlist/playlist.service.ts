@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { prisma } from '../shared/prisma';
-const AdmZip = require('adm-zip');
-
-const ytdl = require('@distube/ytdl-core');
+import { prisma } from '../shared/prisma.js';
+import AdmZip from 'adm-zip';
+import ytdl from '@distube/ytdl-core';
 
 @Injectable()
 export class PlaylistService {

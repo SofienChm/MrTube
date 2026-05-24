@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { RecentlyPlayedController } from './recently-played.controller';
-import { RecentlyPlayedService } from './recently-played.service';
+import { RecentlyPlayedController } from './recently-played.controller.js';
+import { RecentlyPlayedService } from './recently-played.service.js';
 
 @Module({
   controllers: [RecentlyPlayedController],

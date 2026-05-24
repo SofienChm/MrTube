@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Delete, Param, Body, UseGuards, Req, Res } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { PlaylistService } from './playlist.service';
+import { PlaylistService } from './playlist.service.js';
 import type { Response } from 'express';
 
 @ApiTags('Playlist')

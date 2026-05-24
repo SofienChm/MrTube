@@ -1,11 +1,11 @@
 import { Injectable, HttpException, HttpStatus, StreamableFile } from '@nestjs/common';
-import { CacheService } from '../shared/cache/cache.service';
-import { withTimeout } from '../shared/utils';
-import { Song, SearchResult } from '../shared/interfaces/song.interface';
+import { CacheService } from '../shared/cache/cache.service.js';
+import { withTimeout } from '../shared/utils.js';
+import { Song, SearchResult } from '../shared/interfaces/song.interface.js';
 import { Readable } from 'stream';
 
-const ytSearch = require('yt-search');
-const ytdl = require('@distube/ytdl-core');
+import ytSearch from 'yt-search';
+import ytdl from '@distube/ytdl-core';
 const YT_TIMEOUT = 8000;
 
 @Injectable()
