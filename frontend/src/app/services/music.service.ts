@@ -15,11 +15,11 @@ export class MusicService {
   }
 
   getDetails(videoId: string): Observable<ApiResponse<Song>> {
-    return this.http.get<ApiResponse<Song>>(`${this.apiUrl}/details`, { params: { videoId } });
+    return this.http.get<ApiResponse<Song>>(`${this.apiUrl}/details/${videoId}`);
   }
 
   getRelated(videoId: string): Observable<ApiResponse<Song[]>> {
-    return this.http.get<ApiResponse<Song[]>>(`${this.apiUrl}/related`, { params: { videoId } });
+    return this.http.get<ApiResponse<Song[]>>(`${this.apiUrl}/related/${videoId}`);
   }
 
   getTrending(): Observable<ApiResponse<Song[]>> {

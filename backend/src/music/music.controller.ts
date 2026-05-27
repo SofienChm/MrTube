@@ -1,4 +1,5 @@
-import { Controller, Get, Query, Param, Res, Header } from '@nestjs/common';
+import { Controller, Get, Query, Param, Res, Req, Header } from '@nestjs/common';
+import type { Request } from 'express';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { MusicService } from './music.service.js';
 import { SearchQueryDto } from '../shared/dto/search-query.dto.js';
@@ -17,18 +18,16 @@ export class MusicController {
     return { success: true, data };
   }
 
-  @Get('details')
+  @Get('details/:videoId')
   @ApiOperation({ summary: 'Get song details by video ID' })
-  @ApiQuery({ name: 'videoId', required: true })
-  async details(@Query('videoId') videoId: string): Promise<ApiResponse<Song>> {
+  async details(@Param('videoId') videoId: string): Promise<ApiResponse<Song>> {
     const data = await this.music.getSongDetails(videoId);
     return { success: true, data };
   }
 
-  @Get('related')
+  @Get('related/:videoId')
   @ApiOperation({ summary: 'Get related songs for a video' })
-  @ApiQuery({ name: 'videoId', required: true })
-  async related(@Query('videoId') videoId: string): Promise<ApiResponse<Song[]>> {
+  async related(@Param('videoId') videoId: string): Promise<ApiResponse<Song[]>> {
     const data = await this.music.getRelatedSongs(videoId);
     return { success: true, data };
   }
@@ -38,6 +37,42 @@ export class MusicController {
   async trending(): Promise<ApiResponse<Song[]>> {
     const data = await this.music.getTrending();
     return { success: true, data };
+  }
+
+  @Get('recommendations')
+  @ApiOperation({ summary: 'Get music recommendations based on recently played' })
+  @ApiQuery({ name: 'videoIds', required: false })
+  async recommendations(@Query('videoIds') videoIds?: string): Promise<ApiResponse<Song[]>> {
+    const ids = videoIds?.split(',').filter(Boolean) ?? [];
+    const data = await this.music.getRecommendations(ids);
+    return { success: true, data };
+  }
+
+  @Get('quick-picks')
+  @ApiOperation({ summary: 'Get a diverse set of quick pick songs' })
+  async quickPicks(): Promise<ApiResponse<Song[]>> {
+    const data = await this.music.getQuickPicks();
+    return { success: true, data };
+  }
+
+  @Get('stream-url/:videoId')
+  @ApiOperation({ summary: 'Get audio stream URL from Piped API' })
+  async getStreamUrl(@Param('videoId') videoId: string): Promise<ApiResponse<{ url: string | null }>> {
+    const url = await this.music.getStreamUrl(videoId);
+    return { success: true, data: { url } };
+  }
+
+  @Get('stream/:videoId')
+  @ApiOperation({ summary: 'Proxy audio stream from YouTube with Range support' })
+  async streamAudio(@Param('videoId') videoId: string, @Req() req: Request, @Res() res: Response): Promise<void> {
+    try {
+      const range = req.headers['range'] as string | undefined;
+      await this.music.streamAudio(videoId, res, range);
+    } catch {
+      if (!res.headersSent) {
+        res.status(502).json({ success: false, message: 'Failed to stream audio' });
+      }
+    }
   }
 
   @Get('download/:videoId')
