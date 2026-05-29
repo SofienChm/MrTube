@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MusicService } from '../../../services/music.service';
 import { PlayerService } from '../../../services/player.service';
+import { LocationService } from '../../../core/services/location.service';
 import { Song } from '../../../interfaces/song.interface';
 
 @Component({
@@ -108,11 +109,15 @@ export class QuickSelectionComponent implements OnInit {
   constructor(
     private readonly music: MusicService,
     private readonly player: PlayerService,
+    private readonly location: LocationService,
   ) {}
 
   ngOnInit(): void {
-    this.music.getTrending().subscribe(res => {
-      this.songs = res.data.slice(0, 6);
+    this.location.getCountry().subscribe(country => {
+      const region = country ?? undefined;
+      this.music.getTrending(region).subscribe(res => {
+        this.songs = res.data.slice(0, 6);
+      });
     });
   }
 

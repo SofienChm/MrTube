@@ -34,8 +34,9 @@ export class MusicController {
 
   @Get('trending')
   @ApiOperation({ summary: 'Get trending music' })
-  async trending(): Promise<ApiResponse<Song[]>> {
-    const data = await this.music.getTrending();
+  @ApiQuery({ name: 'region', required: false })
+  async trending(@Query('region') region?: string): Promise<ApiResponse<Song[]>> {
+    const data = await this.music.getTrending(region);
     return { success: true, data };
   }
 

@@ -78,21 +78,36 @@ export class MusicService {
   async getRelatedSongs(videoId: string): Promise<Song[]> {
     try {
       const result: any = await withTimeout(ytSearch({ videoId }), YT_TIMEOUT);
-      return (result.related ?? []).slice(0, 10).map(this.mapVideo);
+      const related = (result.related ?? []).slice(0, 10);
+      if (related.length > 0) return related.map(this.mapVideo);
+      const title = result.title ?? '';
+      if (title) {
+        const searchResult: any = await withTimeout(ytSearch({ query: title, category: 'music' }), YT_TIMEOUT);
+        const videos: any[] = (searchResult.videos ?? searchResult.all ?? []).slice(0, 10);
+        return videos
+          .filter((v: any) => v.videoId !== videoId)
+          .slice(0, 10)
+          .map(this.mapVideo);
+      }
+      return [];
     } catch {
       return [];
     }
   }
 
-  async getTrending(): Promise<Song[]> {
-    const cacheKey = this.cache.buildKey('trending');
+  async getTrending(region?: string): Promise<Song[]> {
+    const cacheKey = this.cache.buildKey('trending', region ?? 'global');
     const cached = this.cache.get<Song[]>(cacheKey);
     if (cached) return cached;
 
     try {
-      const result: any = await withTimeout(ytSearch('trending music'), YT_TIMEOUT);
+      const query = region
+        ? `trending music in ${region}`
+        : 'trending music';
+      const result: any = await withTimeout(ytSearch(query), YT_TIMEOUT);
       const songs: Song[] = (result.videos ?? result.all ?? []).slice(0, 20).map(this.mapVideo);
-      this.cache.set(cacheKey, songs, 1800);
+      const ttl = region ? 600 : 1800;
+      this.cache.set(cacheKey, songs, ttl);
       return songs;
     } catch {
       return [];

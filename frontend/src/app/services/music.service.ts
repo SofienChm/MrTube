@@ -22,8 +22,10 @@ export class MusicService {
     return this.http.get<ApiResponse<Song[]>>(`${this.apiUrl}/related/${videoId}`);
   }
 
-  getTrending(): Observable<ApiResponse<Song[]>> {
-    return this.http.get<ApiResponse<Song[]>>(`${this.apiUrl}/trending`);
+  getTrending(region?: string): Observable<ApiResponse<Song[]>> {
+    const params: any = {};
+    if (region) params.region = region;
+    return this.http.get<ApiResponse<Song[]>>(`${this.apiUrl}/trending`, { params });
   }
 
   getDownloadUrl(videoId: string): string {

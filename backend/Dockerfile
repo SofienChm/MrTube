@@ -1,7 +1,8 @@
 FROM node:20-alpine
 WORKDIR /app
 
-RUN apk add --no-cache python3 make g++
+RUN apk add --no-cache python3 py3-pip make g++
+RUN pip install --break-system-packages yt-dlp
 
 COPY package*.json ./
 RUN npm install
