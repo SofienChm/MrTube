@@ -8,7 +8,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-      if (!origin || origin.startsWith('http://localhost')) {
+      if (!origin || origin.startsWith('http://localhost') || origin.includes('100.89.232.15')) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
