@@ -49,6 +49,15 @@ export class MusicController {
     return { success: true, data };
   }
 
+  @Get('personalized-picks')
+  @ApiOperation({ summary: 'Get personalized song picks based on listening history' })
+  @ApiQuery({ name: 'videoIds', required: false })
+  async personalizedPicks(@Query('videoIds') videoIds?: string): Promise<ApiResponse<Song[]>> {
+    const ids = videoIds?.split(',').filter(Boolean) ?? [];
+    const data = await this.music.getPersonalizedPicks(ids);
+    return { success: true, data };
+  }
+
   @Get('quick-picks')
   @ApiOperation({ summary: 'Get a diverse set of quick pick songs' })
   async quickPicks(): Promise<ApiResponse<Song[]>> {

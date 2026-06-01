@@ -142,6 +142,44 @@ export class MusicService {
     }
   }
 
+  async getPersonalizedPicks(videoIds: string[]): Promise<Song[]> {
+    if (videoIds.length === 0) {
+      return this.getQuickPicks();
+    }
+    try {
+      const details = await Promise.all(
+        videoIds.slice(0, 5).map((id) =>
+          withTimeout(ytSearch({ videoId: id }), YT_TIMEOUT)
+            .then((r: any) => r.title || '')
+            .catch(() => ''),
+        ),
+      );
+      const queries = details.filter(Boolean).slice(0, 3);
+      if (queries.length === 0) return this.getQuickPicks();
+
+      const searchPromises = queries.map((q) =>
+        withTimeout(ytSearch({ query: q, category: 'music' }), YT_TIMEOUT)
+          .then((r: any) => (r.videos ?? r.all ?? []).slice(0, 8))
+          .catch(() => []),
+      );
+      const results = await Promise.all(searchPromises);
+      const seen = new Set<string>();
+      const songs: Song[] = [];
+      for (const list of results) {
+        for (const v of list) {
+          if (seen.has(v.videoId)) continue;
+          seen.add(v.videoId);
+          songs.push(this.mapVideo(v));
+          if (songs.length >= 12) break;
+        }
+        if (songs.length >= 12) break;
+      }
+      return songs;
+    } catch {
+      return [];
+    }
+  }
+
   async getQuickPicks(): Promise<Song[]> {
     const cacheKey = this.cache.buildKey('quickpicks');
     const cached = this.cache.get<Song[]>(cacheKey);
@@ -190,19 +228,28 @@ export class MusicService {
   }
 
   private getYtDlpBestAudioUrl(videoId: string): { url: string; mimeType: string } | null {
+    const cacheKey = this.cache.buildKey('streamurl', videoId);
+    const cached = this.cache.get<{ url: string; mimeType: string }>(cacheKey);
+    if (cached) return cached;
+
     try {
       const output = execSync(
         `python -m yt_dlp -g -f "140/251/249" --no-warnings --print "%(url)s|%(ext)s" "https://www.youtube.com/watch?v=${videoId}"`,
         { timeout: 15000, encoding: 'utf-8' },
       ).trim();
       const parts = output.split('|');
+      let result: { url: string; mimeType: string } | null = null;
       if (parts.length >= 2 && parts[0]) {
         const ext = parts[1];
         const mimeType = ext === 'm4a' ? 'audio/mp4' : ext === 'webm' ? 'audio/webm' : 'audio/webm';
-        return { url: parts[0], mimeType };
+        result = { url: parts[0], mimeType };
+      } else if (parts[0]) {
+        result = { url: parts[0], mimeType: 'audio/webm' };
       }
-      if (parts[0]) return { url: parts[0], mimeType: 'audio/webm' };
-      return null;
+      if (result) {
+        this.cache.set(cacheKey, result, 1800);
+      }
+      return result;
     } catch {
       return null;
     }
